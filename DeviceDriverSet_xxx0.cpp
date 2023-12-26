@@ -1,15 +1,14 @@
 /*
  * @Author: ELEGOO
  * @Date: 2019-10-22 11:59:09
- * @LastEditTime: 2020-12-18 11:42:40
+ * @LastEditTime: 2020-12-29 16:07:48
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: Smart Robot Car V4.0
  * @FilePath: 
  */
 #include "DeviceDriverSet_xxx0.h"
 //#include "PinChangeInt.h"
 #include <avr/wdt.h>
-
 static void
 delay_xxx(uint16_t _ms)
 {
@@ -152,8 +151,8 @@ float DeviceDriverSet_Voltage::DeviceDriverSet_Voltage_getAnalogue(void)
 {
   //float Voltage = ((analogRead(PIN_Voltage) * 5.00 / 1024) * 7.67); //7.66666=((10 + 1.50) / 1.50)
   float Voltage = (analogRead(PIN_Voltage) * 0.0375);
-  Voltage = Voltage + (Voltage * 0.08); //补偿8%
-  //return (analogRead(PIN_Voltage) * 5.00 / 1024) * ((10 + 1.50) / 1.50); //读取电压值
+  Voltage = Voltage + (Voltage * 0.08); //Compensation 8%
+  //return (analogRead(PIN_Voltage) * 5.00 / 1024) * ((10 + 1.50) / 1.50); //Read voltage value
   return Voltage;
 }
 
@@ -162,7 +161,7 @@ void DeviceDriverSet_Voltage::DeviceDriverSet_Voltage_Test(void)
 {
   //float Voltage = ((analogRead(PIN_Voltage) * 5.00 / 1024) * 7.67); //7.66666=((10 + 1.50) / 1.50)
   float Voltage = (analogRead(PIN_Voltage) * 0.0375); //7.66666=((10 + 1.50) / 1.50)
-  Voltage = Voltage + (Voltage * 0.08);               //补偿8%
+  Voltage = Voltage + (Voltage * 0.08);               //Compensation 8%
   //Serial.println(analogRead(PIN_Voltage) * 4.97 / 1024);
   Serial.println(Voltage);
 }
@@ -203,19 +202,20 @@ void DeviceDriverSet_Motor::DeviceDriverSet_Motor_Test(void)
 #endif
 
 /*
- Motor_control：AB / 方向、速度
+ Motor_control：AB / movement direction and speed
 */
-void DeviceDriverSet_Motor::DeviceDriverSet_Motor_control(boolean direction_A, uint8_t speed_A, //A组电机参数
-                                                          boolean direction_B, uint8_t speed_B, //B组电机参数
-                                                          boolean controlED                     //AB使能允许 true
-                                                          )                                     //电机控制
+void DeviceDriverSet_Motor::DeviceDriverSet_Motor_control(boolean direction_A, uint8_t speed_A, //Group A motor parameters
+                                                          boolean direction_B, uint8_t speed_B, //Group B motor parameters
+                                                          boolean controlED                     //AB enable setting (true)
+                                                          )                                     //Motor control
 {
-  if (controlED == control_enable) //使能允许？
+
+  if (controlED == control_enable) //Enable motot control？
   {
     digitalWrite(PIN_Motor_STBY, HIGH);
     { //A...Right
 
-      switch (direction_A) //方向控制
+      switch (direction_A) //movement direction control
       {
       case direction_just:
         digitalWrite(PIN_Motor_AIN_1, HIGH);
@@ -386,35 +386,36 @@ void DeviceDriverSet_Servo::DeviceDriverSet_Servo_control(unsigned int Position_
   delay_xxx(450);
   myservo.detach();
 }
-//选择舵机、角度
+//Servo motor control:Servo motor number and position angle
 void DeviceDriverSet_Servo::DeviceDriverSet_Servo_controls(uint8_t Servo, unsigned int Position_angle)
 {
   if (Servo == 1 || Servo == 3) //Servo_z
   {
-    if (Position_angle <= 0) //下限控制
+    if (Position_angle <= 1) //minimum angle control
     {
-      Position_angle = 0;
+      Position_angle = 1;
     }
-    if (Position_angle >= 180) //上下限控制
+    if (Position_angle >= 17) //maximum angle control
     {
-      Position_angle = 180;
+      Position_angle = 17;
     }
     myservo.attach(PIN_Servo_z);
-    myservo.write(Position_angle);
+    myservo.write(10 * Position_angle);
     delay_xxx(500);
   }
   if (Servo == 2 || Servo == 3) //Servo_y
   {
-    if (Position_angle <= 0) //下限控制
+
+    if (Position_angle <= 3) //minimum angle control
     {
-      Position_angle = 0;
+      Position_angle = 3;
     }
-    if (Position_angle >= 180) //上下限控制
+    if (Position_angle >= 11) //maximum angle control
     {
-      Position_angle = 180;
+      Position_angle = 11;
     }
     myservo.attach(PIN_Servo_y);
-    myservo.write(Position_angle);
+    myservo.write(10 * Position_angle);
     delay_xxx(500);
   }
   myservo.detach();
@@ -478,6 +479,18 @@ bool DeviceDriverSet_IRrecv::DeviceDriverSet_IRrecv_Get(uint8_t *IRrecv_Get /*ou
     case /* constant-expression */ aRECV_6:
     case /* constant-expression */ bRECV_6:
       /* code */ *IRrecv_Get = 11;
+      break;
+    case /* constant-expression */ aRECV_7:
+    case /* constant-expression */ bRECV_7:
+      /* code */ *IRrecv_Get = 12;
+      break;
+    case /* constant-expression */ aRECV_8:
+    case /* constant-expression */ bRECV_8:
+      /* code */ *IRrecv_Get = 13;
+      break;
+    case /* constant-expression */ aRECV_9:
+    case /* constant-expression */ bRECV_9:
+      /* code */ *IRrecv_Get = 14;
       break;
     default:
       // *IRrecv_Get = 5;

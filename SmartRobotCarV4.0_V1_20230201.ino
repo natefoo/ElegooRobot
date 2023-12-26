@@ -1,13 +1,12 @@
 /*
  * @Author: ELEGOO
  * @Date: 2019-10-22 11:59:09
- * @LastEditTime: 2020-12-18 14:37:22
+ * @LastEditTime: 2020-12-18 14:14:35
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: Smart Robot Car V4.0
  * @FilePath: 
  */
 #include <avr/wdt.h>
-#include "DeviceDriverSet_xxx0.h"
 #include "ApplicationFunctionSet_xxx0.h"
 
 void setup()
@@ -26,7 +25,6 @@ void loop()
   Application_FunctionSet.ApplicationFunctionSet_RGB();
   Application_FunctionSet.ApplicationFunctionSet_Follow();
   Application_FunctionSet.ApplicationFunctionSet_Obstacle();
-
   Application_FunctionSet.ApplicationFunctionSet_Tracking();
   Application_FunctionSet.ApplicationFunctionSet_Rocker();
   Application_FunctionSet.ApplicationFunctionSet_Standby();

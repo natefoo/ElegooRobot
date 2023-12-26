@@ -1,9 +1,9 @@
 /*
  * @Author: ELEGOO
  * @Date: 2019-10-22 11:59:09
- * @LastEditTime: 2020-12-18 14:52:30
+ * @LastEditTime: 2020-12-29 16:04:05
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: Smart Robot Car V4.0
  * @FilePath: 
  */
 #ifndef _ApplicationFunctionSet_xxx0_H_
@@ -18,14 +18,14 @@ public:
   void ApplicationFunctionSet_Bootup(void);
   void ApplicationFunctionSet_RGB(void);
   void ApplicationFunctionSet_Expression(void);
-  void ApplicationFunctionSet_Rocker(void);             //摇杆
-  void ApplicationFunctionSet_Tracking(void);           //循迹
-  void ApplicationFunctionSet_Obstacle(void);           //避障
-  void ApplicationFunctionSet_Follow(void);             //跟随
-  void ApplicationFunctionSet_Servo(uint8_t Set_Servo); //舵机
-  void ApplicationFunctionSet_Standby(void);            //待机
-  void ApplicationFunctionSet_KeyCommand(void);         //按键命令
-  void ApplicationFunctionSet_SensorDataUpdate(void);   //传感器数据更新
+  void ApplicationFunctionSet_Rocker(void);             //APP Rocker Control
+  void ApplicationFunctionSet_Tracking(void);           //Line Tracking Mode
+  void ApplicationFunctionSet_Obstacle(void);           //Obstacle Avoidance
+  void ApplicationFunctionSet_Follow(void);             //Following Mode
+  void ApplicationFunctionSet_Servo(uint8_t Set_Servo); //Servo Control
+  void ApplicationFunctionSet_Standby(void);            //Standby Mode
+  void ApplicationFunctionSet_KeyCommand(void);         //Mode Switch Button
+  void ApplicationFunctionSet_SensorDataUpdate(void);   //Sensor Data Update
   void ApplicationFunctionSet_SerialPortDataAnalysis(void);
   void ApplicationFunctionSet_IRrecv(void);
 
@@ -55,14 +55,14 @@ public: /*CMD*/
   void CMD_TrajectoryControl_xxx0(void);
 
 private:
-  /*传感器原数据*/
-  volatile float VoltageData_V;        //电压数据
-  volatile uint16_t UltrasoundData_mm; //超声波数据
-  volatile uint16_t UltrasoundData_cm; //超声波数据
-  volatile int TrackingData_L;         //循迹数据
-  volatile int TrackingData_M;         //循迹数据
-  volatile int TrackingData_R;
-  /*传感器状态*/
+  /*Sensor Raw Value*/
+  volatile float VoltageData_V;        //Battery Voltage Value
+  volatile uint16_t UltrasoundData_mm; //Ultrasonic Sensor Value (mm)
+  volatile uint16_t UltrasoundData_cm; //Ultrasonic Sensor Value (cm)
+  volatile int TrackingData_L;         //Line Tracking Module Value (Left)
+  volatile int TrackingData_M;         //Line Tracking Module Value (Middle)
+  volatile int TrackingData_R;         //Line Tracking Module Value (Right)
+  /*Sensor Status*/
   boolean VoltageDetectionStatus = false;
   boolean UltrasoundDetectionStatus = false;
   boolean TrackingDetectionStatus_R = false;
@@ -72,12 +72,12 @@ private:
 public:
   boolean Car_LeaveTheGround = true;
 
-  /*传感器检测*/
+  /*Sensor Threshold Setting*/
   const float VoltageDetection = 7.00;
   const uint8_t ObstacleDetection = 20;
 
   String CommandSerialNumber;
-  //uint8_t Rocker_CarSpeed = 255;
+  uint8_t Rocker_CarSpeed = 250;
   uint8_t Rocker_temp;
 
 public:

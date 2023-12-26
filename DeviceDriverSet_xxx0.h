@@ -1,9 +1,9 @@
 /*
  * @Author: ELEGOO
  * @Date: 2019-10-22 11:59:09
- * @LastEditTime: 2020-12-18 14:38:11
+ * @LastEditTime: 2020-12-29 16:02:26
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: Smart Robot Car V4.0
  * @FilePath: 
  */
 #ifndef _DeviceDriverSet_xxx0_H_
@@ -92,24 +92,22 @@ public:
 #if _Test_DeviceDriverSet
   void DeviceDriverSet_Motor_Test(void);
 #endif
-  void DeviceDriverSet_Motor_control(boolean direction_A, uint8_t speed_A, //A组电机参数
-                                     boolean direction_B, uint8_t speed_B, //B组电机参数
-                                     boolean controlED                     //AB使能允许 true
-  );                                                                       //电机控制
+  void DeviceDriverSet_Motor_control(boolean direction_A, uint8_t speed_A, //Group A motor parameters
+                                     boolean direction_B, uint8_t speed_B, //Group B motor parameters
+                                     boolean controlED                     //AB enable setting (true)
+  );                                                                       //motor control
 private:
-//DRV8835
-/*#define PIN_Motor_PWMA 5
-#define PIN_Motor_PWMB 6
-#define PIN_Motor_STBY 8
-#define PIN_Motor_BIN_1 7
-#define PIN_Motor_AIN_1 9    */
+  // #define PIN_Motor_PWMA 5
+  // #define PIN_Motor_PWMB 6
+  // #define PIN_Motor_STBY 8
+  // #define PIN_Motor_BIN_1 7
+  // #define PIN_Motor_AIN_1 9
 //TB6612
 #define PIN_Motor_PWMA 5
 #define PIN_Motor_PWMB 6
 #define PIN_Motor_BIN_1 8
 #define PIN_Motor_AIN_1 7
 #define PIN_Motor_STBY 3
-
 public:
 #define speed_Max 255
 #define direction_just true
@@ -155,7 +153,7 @@ private:
 #define PIN_Servo_y 11
 };
 /*IRrecv*/
-#include <IRremote.h>
+#include "IRremote.h"
 class DeviceDriverSet_IRrecv
 {
 public:

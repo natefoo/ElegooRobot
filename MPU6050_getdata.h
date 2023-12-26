@@ -3,7 +3,7 @@
  * @Date: 2019-10-22 11:59:09
  * @LastEditTime: 2020-06-12 17:22:13
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: MPU6050 Data solution
  * @FilePath: 
  */
 #ifndef _MPU6050_getdata_H_
@@ -21,9 +21,9 @@ public:
   int16_t gz;
   //float pith, roll, yaw;
   unsigned long now, lastTime = 0;
-  float dt;      //微分时间
-  float agz = 0; //角度变量
-  long gzo = 0;  //陀螺仪偏移量
+  float dt;      //Derivative time
+  float agz = 0; //Angle variable
+  long gzo = 0;  //Gyro offset
 };
 
 extern MPU6050_getdata MPU6050Getdata;

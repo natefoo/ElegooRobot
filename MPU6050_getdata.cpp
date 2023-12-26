@@ -1,9 +1,9 @@
 /*
  * @Author: ELEGOO
  * @Date: 2019-10-22 11:59:09
- * @LastEditTime: 2020-06-19 11:57:50
+ * @LastEditTime: 2020-06-30 10:34:30
  * @LastEditors: Changhua
- * @Description: conqueror robot tank
+ * @Description: MPU6050 Data solution
  * @FilePath: 
  */
 
@@ -11,7 +11,6 @@
 #include "MPU6050.h"
 #include "Wire.h"
 #include "MPU6050_getdata.h"
-//#include "MsTimer2.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -22,7 +21,7 @@ MPU6050_getdata MPU6050Getdata;
 // {
 //   sei();
 //   int16_t ax, ay, az, gx, gy, gz;
-//   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz); //读取六轴原始数值
+//   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz); //Read the raw values of the six axes
 //   float gyroz = -(gz - MPU6050Getdata.gzo) / 131 * 0.005f;
 //   MPU6050Getdata.yaw += gyroz;
 // }
@@ -43,42 +42,42 @@ bool MPU6050_getdata::MPU6050_dveInit(void)
     {
       return true;
     }
-  } while (chip_id == 0X00 || chip_id == 0XFF); //确保从机设备在线（强行等待 获取 ID ）
+  } while (chip_id == 0X00 || chip_id == 0XFF); //Ensure that the slave device is online（Wait forcibly to get the ID）
   accelgyro.initialize();
-  // unsigned short times = 100; //采样次数
+  // unsigned short times = 100; //Sampling times
   // for (int i = 0; i < times; i++)
   // {
   //   gz = accelgyro.getRotationZ();
   //   gzo += gz;
   // }
-  // gzo /= times; //计算陀螺仪偏移
+  // gzo /= times; //Calculate gyroscope offset
   return false;
 }
 bool MPU6050_getdata::MPU6050_calibration(void)
 {
-  unsigned short times = 100; //采样次数
+  unsigned short times = 100; //Sampling times
   for (int i = 0; i < times; i++)
   {
     gz = accelgyro.getRotationZ();
     gzo += gz;
   }
-  gzo /= times; //计算陀螺仪偏移
+  gzo /= times; //Calculate gyroscope offset
 
   // gzo = accelgyro.getRotationZ();
   return false;
 }
 bool MPU6050_getdata::MPU6050_dveGetEulerAngles(float *Yaw)
 {
-  unsigned long now = millis();   //当前时间(ms)
-  dt = (now - lastTime) / 1000.0; //微分时间(s)
-  lastTime = now;                 //上一次采样时间(ms)
-  gz = accelgyro.getRotationZ();
-  float gyroz = -(gz - gzo) / 131.0 * dt; //z轴角速度
-  if (fabs(gyroz) < 0.05)
+  unsigned long now = millis();           //Record the current time(ms)
+  dt = (now - lastTime) / 1000.0;         //Caculate the derivative time(s)
+  lastTime = now;                         //Record the last sampling time(ms)
+  gz = accelgyro.getRotationZ();          //Read the raw values of the six axes
+  float gyroz = -(gz - gzo) / 131.0 * dt; //z-axis angular velocity
+  if (fabs(gyroz) < 0.05)                 //Clear instant zero drift signal
   {
     gyroz = 0.00;
   }
-  agz += gyroz; //z轴角速度积分
+  agz += gyroz; //z-axis angular velocity integral
   *Yaw = agz;
   return false;
 }
